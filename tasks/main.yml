@@ -1,0 +1,53 @@
+---
+# tasks file for swag_rp
+
+- name: Get infos on container
+  community.docker.docker_container_info:
+    name: "{{ swag_container_name }}"
+  register: swag_container_info
+
+- name: Does container exist?
+  ansible.builtin.debug:
+    msg: "The container {{ 'exists' if swag_container_info.exists else 'does not exist' }}"
+
+- name: Set up directories
+  file:
+    state: directory
+    path: "{{ item }}"
+  with_items:
+    - "{{ swag_data }}/nginx/proxy-confs"
+  become: true
+
+
+# Remove the config files (symlinks)
+#
+- name: Find config files glob
+  find:
+    paths: "{{ swag_data }}/nginx/proxy-confs"
+    patterns: '*.config'
+  register: files_to_delete
+
+- name: Remove config files glob
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ files_to_delete.files }}"
+
+# Set up the reverse proxies (v2)
+#
+- name: Create configurations for NGINX
+  vars:
+    site_internal_url: "{{ item.src.protocol }}://{{ hostvars[item.src.host].ansible_host }}:{{ item.src.port }}"
+    template_name: "{{ item.template_name }}"
+    site_name: "{{ item.alias }}.{{ item.domain }}"
+    domain: "{{ item.domain }}"
+    
+  template:
+    src: "{{ item.template_name }}"
+    dest: "{{ swag_data }}/nginx/site-confs/{{ item.alias }}.config"
+  tags:
+    - configuration
+  notify:
+    - restart swag - after config check
+  when: swag_sites_config and swag_sites_config != "none"
+  loop: "{{ swag_sites_config }}"

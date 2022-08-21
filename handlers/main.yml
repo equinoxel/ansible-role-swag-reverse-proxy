@@ -1,0 +1,9 @@
+---
+# handlers file for swag_rp
+
+- name: restart swag - after config check
+  docker_container:
+    name: "{{ swag_container_name }}"
+    restart: true
+  when: swag_container_info.exists
+

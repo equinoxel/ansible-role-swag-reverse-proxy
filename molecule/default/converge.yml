@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include laurivan.swag_rp"
+      include_role:
+        name: "laurivan.swag_rp"
