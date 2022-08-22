@@ -1,12 +1,10 @@
-Role Name
-=========
+# SWAG Reverse Proxy
 
 This is am opinionated role to install templates in SWAG. It will install templated into the `swag_config` path. It restarts the SWAG container (declared via)
 
 **Note**: The role installs the configuration files in `/nginx/site-confs/` rather than `/nginx/proxy_confs`, because the latter didn't work for me.
 
-Role Variables
---------------
+## Role Variables
 
 This role uses the variables listed below, along with default values (see defaults/main.yml).
 
@@ -50,7 +48,7 @@ Each reverse proxy entry contains the following items:
 The role creates the following variables available to the template:
 
 ```yaml
-    site_internal_url: "{{ item.src.protocol }}://{{ hostvars[item.src.host].ansible_host }}:{{ item.src.port }}"
+    site_internal_url: "{{ item.src.protocol }}://{%if hostvars[item.src.host].ansible_host is defined %}{{ hostvars[item.src.host].ansible_host }}{% else %}{{item.src.host}}{% endif %}:{{ item.src.port }}"
     template_name: "{{ item.template_name }}"
     site_name: "{{ item.alias }}.{{ item.domain }}"
     domain: "{{ item.domain }}"
@@ -58,7 +56,7 @@ The role creates the following variables available to the template:
 
 Please note how the site internal URL is constructed using:
   - the `src.protocol`,
-  - the IP address for the host specified in `item.src.host` and
+  - the IP address for the host specified in `item.src.host` if found, or the `item.src.host` itself if not and
   - the `src.port`.
 
 ### Templates
