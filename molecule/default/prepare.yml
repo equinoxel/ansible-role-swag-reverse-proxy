@@ -10,5 +10,3 @@
       raw: mount --move /tmp/docker.sock /var/run/docker.sock
       become: true
       changed_when: false
-
-     

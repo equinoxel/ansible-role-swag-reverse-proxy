@@ -6,4 +6,3 @@
     name: "{{ swag_container_name }}"
     restart: true
   when: swag_container_info.exists
-

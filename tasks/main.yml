@@ -1,5 +1,5 @@
 ---
-# tasks file for swag_rp
+# tasks file for swag_reverse_proxy
 
 - name: Get infos on container
   community.docker.docker_container_info:
