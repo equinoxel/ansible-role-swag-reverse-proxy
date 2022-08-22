@@ -1,9 +1,9 @@
 ---
-# defaults file for swag_rp
+# defaults file for swag_reverse_proxy
 
-reverse_proxy_entries:
-  - { url: "http://192.168.1.32:48533", template_name: "navidrome.config.j2", site: "music" }
+swag_container_name: "swag"
+swag_data: "/mnt/data/swag"
 
 swag_sites_config:
   # core
-  - { src: { protocol: "https", host: "core", port: "8443"}, template_name: "unifi.config.j2", alias: "unifi", domain: "{{ domain_home_suffix }}" }
+  - { src: { protocol: "https", host: "core", port: "8443"}, template_name: "mysite.config.j2", alias: "mysite", domain: "example.com" }

@@ -5,6 +5,7 @@
   community.docker.docker_container_info:
     name: "{{ swag_container_name }}"
   register: swag_container_info
+  ignore_errors: yes
 
 - name: Does container exist?
   ansible.builtin.debug:
@@ -35,9 +36,10 @@
 
 # Set up the reverse proxies (v2)
 #
+
 - name: Create configurations for NGINX
   vars:
-    site_internal_url: "{{ item.src.protocol }}://{{ hostvars[item.src.host].ansible_host }}:{{ item.src.port }}"
+    site_internal_url: "{{ item.src.protocol }}://{%if hostvars[item.src.host].ansible_host is defined %}{{ hostvars[item.src.host].ansible_host }}{% else %}{{item.src.host}}{% endif %}:{{ item.src.port }}"
     template_name: "{{ item.template_name }}"
     site_name: "{{ item.alias }}.{{ item.domain }}"
     domain: "{{ item.domain }}"

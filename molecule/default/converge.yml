@@ -1,7 +1,27 @@
 ---
 - name: Converge
   hosts: all
-  tasks:
-    - name: "Include laurivan.swag_rp"
-      include_role:
-        name: "laurivan.swag_rp"
+  become: true
+  vars:
+    swag_container_name: "swag"
+    swag_data: "/var/local/swag"
+    swag_sites_config:
+      - { src: { protocol: "https", host: "instance", port: "8443"}, template_name: "example.config.j2", alias: "mysite", domain: "example.com" }
+
+  pre_tasks:
+    - name: create default directory
+      file:
+        path: "{{ swag_data }}/nginx/site-confs"
+        state: directory
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+      when: ansible_os_family == 'Debian'
+    - name: Install python requests
+      pip:
+        name: 
+          - requests
+    - name: debug
+      debug:
+        msg: "{{ hostvars }}"
+  roles:
+    - role: laurivan.swag_reverse_proxy
