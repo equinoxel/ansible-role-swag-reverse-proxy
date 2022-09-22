@@ -6,4 +6,4 @@ swag_data: "/mnt/data/swag"
 
 swag_sites_config:
   # core
-  - { src: { protocol: "https", host: "core", port: "8443"}, template_name: "mysite.config.j2", alias: "mysite", domain: "example.com" }
+  - { src: { protocol: "https", host: "core", port: "8443"}, template_name: "mysite.config.j2", alias: "mysite", domain: "example.com", kind: "subdomain" }

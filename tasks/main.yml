@@ -46,7 +46,7 @@
     
   template:
     src: "{{ item.template_name }}"
-    dest: "{{ swag_data }}/nginx/proxy-confs/{{ item.alias }}.conf"
+    dest: "{{ swag_data }}/nginx/proxy-confs/{{ item.alias }}.{{ item.kind }}.conf"
   tags:
     - configuration
   notify:

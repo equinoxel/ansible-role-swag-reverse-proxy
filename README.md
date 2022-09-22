@@ -23,6 +23,7 @@ swag_sites_config:
       port: '8443'
     template_name: unifi.config.j2
     alias: unifi
+    kind: subdomain
     domain: 'example.com'
   - src:
       protocol: https
@@ -30,6 +31,7 @@ swag_sites_config:
       port: '9001'
     template_name: portainer.config.j2
     alias: portainer
+    kind: subdomain
     domain: 'example.com'
 ```
 
@@ -41,6 +43,7 @@ Each reverse proxy entry contains the following items:
     - `port` - the port used by the internal site (e.g. the exposed port of the docker container)
 2. `template_name` - the template name
 3. `alias` - the prefix of the reverse proxy mapper. The full domain will be defined by `{{alias}}.{{domain}}`
+4. `kind` - the type of proxying (subdomain or subfolder)
 4. `domain` - the domain suffix for the website.
 
 The role creates the following variables available to the template:
