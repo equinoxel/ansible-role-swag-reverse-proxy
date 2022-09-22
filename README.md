@@ -2,8 +2,6 @@
 
 This is am opinionated role to install templates in SWAG. It will install templated into the `swag_config` path. It restarts the SWAG container (declared via)
 
-**Note**: The role installs the configuration files in `/nginx/site-confs/` rather than `/nginx/proxy_confs`, because the latter didn't work for me.
-
 ## Role Variables
 
 This role uses the variables listed below, along with default values (see defaults/main.yml).

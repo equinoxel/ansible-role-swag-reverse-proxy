@@ -25,7 +25,7 @@
 - name: Find config files glob
   find:
     paths: "{{ swag_data }}/nginx/proxy-confs"
-    patterns: '*.config'
+    patterns: '*.conf'
   register: files_to_delete
 
 - name: Remove config files glob
@@ -46,7 +46,7 @@
     
   template:
     src: "{{ item.template_name }}"
-    dest: "{{ swag_data }}/nginx/site-confs/{{ item.alias }}.config"
+    dest: "{{ swag_data }}/nginx/proxy-confs/{{ item.alias }}.conf"
   tags:
     - configuration
   notify:
