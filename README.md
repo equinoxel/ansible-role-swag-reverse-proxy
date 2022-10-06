@@ -49,6 +49,9 @@ Each reverse proxy entry contains the following items:
 The role creates the following variables available to the template:
 
 ```yaml
+    site_protocol: "{{ item.src.protocol }}"
+    site_host: "{%if hostvars[item.src.host].ansible_host is defined %}{{ hostvars[item.src.host].ansible_host }}{% else %}{{item.src.host}}{% endif %}"
+    site_port: "{{ item.src.port }}"
     site_internal_url: "{{ item.src.protocol }}://{%if hostvars[item.src.host].ansible_host is defined %}{{ hostvars[item.src.host].ansible_host }}{% else %}{{item.src.host}}{% endif %}:{{ item.src.port }}"
     template_name: "{{ item.template_name }}"
     site_name: "{{ item.alias }}.{{ item.domain }}"
